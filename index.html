@@ -1,0 +1,686 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>徐汇万科中心绿地绿植生态调研报告</title>
+    <style>
+        :root {
+            --primary-color: #1e3f20;
+            --secondary-color: #3a5f43;
+            --accent-color: #df7a5e;
+            --bg-color: #f4f7f5;
+            --card-bg: #ffffff;
+            --text-main: #2b2b2b;
+            --text-muted: #666666;
+        }
+
+        body {
+            font-family: "PingFang SC", "Lantinghei SC", "Microsoft YaHei", sans-serif;
+            background-color: var(--bg-color);
+            color: var(--text-main);
+            line-height: 1.6;
+            margin: 0;
+            padding: 0;
+        }
+
+        header {
+            background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
+            color: white;
+            padding: 40px 20px;
+            text-align: center;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+        }
+
+        header h1 {
+            margin: 0;
+            font-size: 2.2rem;
+            font-weight: 600;
+            letter-spacing: 1px;
+        }
+
+        header p {
+            margin: 10px 0 0 0;
+            opacity: 0.8;
+            font-size: 1.1rem;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 30px auto;
+            padding: 0 20px;
+            display: flex;
+            gap: 30px;
+        }
+
+        /* 侧边导航 */
+        .sidebar {
+            width: 250px;
+            position: sticky;
+            top: 30px;
+            height: fit-content;
+            background: var(--card-bg);
+            padding: 20px;
+            border-radius: 12px;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.05);
+        }
+
+        .sidebar h3 {
+            margin-top: 0;
+            color: var(--primary-color);
+            border-bottom: 2px solid var(--bg-color);
+            padding-bottom: 10px;
+        }
+
+        .sidebar ul {
+            list-style: none;
+            padding: 0;
+            margin: 0;
+        }
+
+        .sidebar ul li {
+            margin: 12px 0;
+        }
+
+        .sidebar ul li a {
+            color: var(--text-main);
+            text-decoration: none;
+            font-size: 0.95rem;
+            transition: color 0.2s;
+        }
+
+        .sidebar ul li a:hover {
+            color: var(--accent-color);
+            font-weight: bold;
+        }
+
+        /* 主体内容 */
+        .main-content {
+            flex: 1;
+        }
+
+        .intro-section {
+            background: var(--card-bg);
+            padding: 25px;
+            border-radius: 12px;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.05);
+            margin-bottom: 30px;
+        }
+
+        .section-title {
+            color: var(--primary-color);
+            border-left: 5px solid var(--accent-color);
+            padding-left: 15px;
+            margin-top: 40px;
+            margin-bottom: 20px;
+            font-size: 1.5rem;
+        }
+
+        /* 植物卡片网格 */
+        .plant-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(340px, 1fr));
+            gap: 25px;
+        }
+
+        .plant-card {
+            background: var(--card-bg);
+            border-radius: 12px;
+            overflow: hidden;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.05);
+            display: flex;
+            flex-direction: column;
+            transition: transform 0.2s, box-shadow 0.2s;
+        }
+
+        .plant-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 8px 20px rgba(0,0,0,0.1);
+        }
+
+        /* 图片样式区 */
+        .plant-image-box {
+            width: 100%;
+            height: 240px;
+            background-color: #e2e8f0;
+            position: relative;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            overflow: hidden;
+        }
+
+        .plant-image-box img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        .image-gallery {
+            width: 100%;
+            height: 100%;
+            display: grid;
+            grid-template-columns: repeat(2, minmax(0, 1fr));
+            gap: 2px;
+            background-color: #cbd5e1;
+        }
+
+        .image-gallery img {
+            min-width: 0;
+            min-height: 0;
+        }
+
+        .image-gallery.single {
+            display: block;
+        }
+
+        .image-gallery.three img:first-child,
+        .image-gallery.five img:first-child {
+            grid-row: span 2;
+        }
+
+        .img-placeholder {
+            text-align: center;
+            color: #94a3b8;
+            font-size: 0.9rem;
+            padding: 20px;
+        }
+
+        .plant-info {
+            padding: 20px;
+            display: flex;
+            flex-direction: column;
+            flex: 1;
+        }
+
+        .plant-name {
+            font-size: 1.25rem;
+            font-weight: bold;
+            color: var(--primary-color);
+            margin: 0 0 8px 0;
+        }
+
+        .plant-meta {
+            font-size: 0.85rem;
+            color: var(--accent-color);
+            margin-bottom: 12px;
+            font-weight: 500;
+        }
+
+        .plant-desc {
+            font-size: 0.9rem;
+            color: var(--text-main);
+            margin-bottom: 15px;
+            flex: 1;
+        }
+
+        .plant-status {
+            font-size: 0.85rem;
+            background-color: var(--bg-color);
+            padding: 8px 12px;
+            border-radius: 6px;
+            color: var(--secondary-color);
+            border-left: 3px solid var(--secondary-color);
+        }
+
+        /* 花境专有样式 */
+        .border-list {
+            margin: 0;
+            padding-left: 20px;
+            font-size: 0.88rem;
+        }
+        .border-list li {
+            margin-bottom: 6px;
+        }
+
+        /* 响应式设计 */
+        @media (max-width: 768px) {
+            .container {
+                flex-direction: column;
+            }
+            .sidebar {
+                position: static;
+                width: auto;
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <header>
+        <h1>徐汇万科中心绿地绿植生态调研</h1>
+        <p>初夏时节（5月）城市商业核心区景观生态与生物多样性样本分析</p>
+    </header>
+
+    <div class="container">
+        <nav class="sidebar">
+            <h3>植物分类群</h3>
+            <ul>
+                <li><a href="#trees">一、现代城市乔木篇</a></li>
+                <li><a href="#shrubs">二、色块与景观灌木篇</a></li>
+                <li><a href="#borders">三、多维立体欧式花境</a></li>
+                <li><a href="#aquatics">四、生态驳岸与水生植物</a></li>
+                <li><a href="#ferns">五、假山石缝与地被微景观</a></li>
+            </ul>
+        </nav>
+
+        <main class="main-content">
+            <section class="intro-section">
+                <h2>调研概述</h2>
+                <p>本次调研聚焦于<strong>徐汇万科中心商办绿地</strong>。该综合体绿地采用了现代海绵城市与生态织网的设计理念，通过高低错落的植物群落（乔、灌、草、水生、地被）搭配，在繁华的都市商业核心区营造出了极具自然野趣与生态净化功能的城市绿肺。时值5月中旬（春夏交替），植物普遍进入高效生长期、结果期及部分夏花繁盛期，呈现出极高的生物多样性与美学观赏价值。</p>
+            </section>
+
+            <h2 id="trees" class="section-title">一、现代城市乔木篇</h2>
+            <div class="plant-grid">
+
+                <div class="plant-card">
+                    <div class="plant-image-box">
+                        <div class="image-gallery">
+                            <img src="pic/北美红栎.jpeg" alt="北美红栎全景">
+                            <img src="pic/北美红栎2.jpeg" alt="北美红栎近景">
+                        </div>
+                    </div>
+                    <div class="plant-info">
+                        <div class="plant-name">沼生栎 / 北美红栎组</div>
+                        <div class="plant-meta">壳斗科 栎属 (Quercus palustris / rubra)</div>
+                        <div class="plant-desc">一种从北美引进的高级彩叶大乔木。叶片呈现标志性的羽状深裂，缺刻极深，裂片尖端带有特异的细小针刺尖，此特征是红栎组与白栎组的核心区别。</div>
+                        <div class="plant-status"><strong>5月物候：</strong>春夏交替时节展现鲜亮的翠绿色，树冠通透；其极强的景观价值将在11月转化为满树震撼的深红色。</div>
+                    </div>
+                </div>
+
+                <div class="plant-card">
+                    <div class="plant-image-box">
+                        <img src="pic/乌桕.jpeg" alt="乌桕">
+                    </div>
+                    <div class="plant-info">
+                        <div class="plant-name">乌桕</div>
+                        <div class="plant-meta">大戟科 乌桕属 (Triadica sebifera)</div>
+                        <div class="plant-desc">极具中式古典野趣的传统优良乔木。叶片呈极其标准的“菱状卵形”，顶端拖着长长的尖尾。细长的叶柄使叶片对风力极为敏感，极易随风沙沙作响，形态灵动。</div>
+                        <div class="plant-status"><strong>5月物候：</strong>树冠全面舒展，正值生机盎然的青绿期，顶梢开始孕育绿色的穗状花序。</div>
+                    </div>
+                </div>
+
+                <div class="plant-card">
+                    <div class="plant-image-box">
+                        <img src="pic/银杏.jpeg" alt="银杏">
+                    </div>
+                    <div class="plant-info">
+                        <div class="plant-name">银杏</div>
+                        <div class="plant-meta">银杏科 银杏属 (Ginkgo biloba)</div>
+                        <div class="plant-desc">著名的“活化石”植物。独特的扇形叶片与二叉状平行叶脉在整个植物界独一无二。其树干挺拔，是现代城市大道及办公园区骨架景观的绝对核心。</div>
+                        <div class="plant-status"><strong>5月物候：</strong>告别了春季的嫩绿，目前正值一年中叶片最为清脆、浓密的纯绿生长盛期。</div>
+                    </div>
+                </div>
+
+                <div class="plant-card">
+                    <div class="plant-image-box">
+                        <img src="pic/玉兰.jpg" alt="玉兰">
+                    </div>
+                    <div class="plant-info">
+                        <div class="plant-name">玉兰 / 白玉兰</div>
+                        <div class="plant-meta">木兰科 木兰属 (Magnolia denudata)</div>
+                        <div class="plant-desc">典型的先花后叶植物。叶片呈倒卵形（上宽下窄），叶尖具有突然收缩的短小凸尖。树皮呈高级的灰白色且相对平滑。</div>
+                        <div class="plant-status"><strong>5月物候：</strong>春季盛花期早已结束。当前进入全绿的“长叶期”与“结果期”，叶丛中挂着扭曲不规则的青绿色棒状聚合果。</div>
+                    </div>
+                </div>
+
+                <div class="plant-card">
+                    <div class="plant-image-box">
+                        <div class="image-gallery">
+                            <img src="pic/紫叶李.jpeg" alt="紫叶李">
+                            <img src="pic/紫叶李2.jpeg" alt="紫叶李挂果">
+                        </div>
+                    </div>
+                    <div class="plant-info">
+                        <div class="plant-name">紫叶李 (红叶李)</div>
+                        <div class="plant-meta">蔷薇科 李属 (Prunus cerasifera 'Pissardii')</div>
+                        <div class="plant-desc">常绿彩叶明星小乔木。全年生长周期均自带低调沉稳的暗紫红色皮肤，常被设计师作为色调调节树种，与周围的纯绿背景树形成强烈对比。</div>
+                        <div class="plant-status"><strong>5月物候：</strong>正值果实成熟期，枝头挂满一串串圆滚滚、表面泛着深紫红色光泽的小李子果实。</div>
+                    </div>
+                </div>
+
+                <div class="plant-card">
+                    <div class="plant-image-box">
+                        <img src="pic/桑树.jpeg" alt="桑树挂果">
+                    </div>
+                    <div class="plant-info">
+                        <div class="plant-name">桑树</div>
+                        <div class="plant-meta">桑科 桑属 (Morus alba)</div>
+                        <div class="plant-desc">传统经济与生态文化树种。叶片边缘具有粗钝锯齿，基部呈心形。其枝条生机盎然，极富民间野趣。</div>
+                        <div class="plant-status"><strong>5月物候：</strong>迎来高光的高效挂果期。枝条上挂满大量桑葚，呈现出“青黄-鲜红-紫黑”动态渐变的成熟过程。</div>
+                    </div>
+                </div>
+
+            </div>
+
+            <h2 id="shrubs" class="section-title">二、色块与景观灌木篇</h2>
+            <div class="plant-grid">
+
+                <div class="plant-card">
+                    <div class="plant-image-box">
+                        <img src="pic/紫荆.jpeg" alt="中国紫荆">
+                    </div>
+                    <div class="plant-info">
+                        <div class="plant-name">紫荆 (中国紫荆)</div>
+                        <div class="plant-meta">豆科 紫荆属 (Cercis chinensis)</div>
+                        <div class="plant-desc">极具辨识度的丛生灌木。拥有完美的无锯齿心形几何叶片，基部掌状脉如伞骨般散开。天然喜欢多干从地面丛生上拔，常用作填补乔木下层空白。</div>
+                        <div class="plant-status"><strong>5月物候：</strong>春季贴干盛开的紫花已退去，当前枝繁叶茂，左上角等老枝处已挂上一串串扁平的长条状扁豆荚果。</div>
+                    </div>
+                </div>
+
+                <div class="plant-card">
+                    <div class="plant-image-box">
+                        <img src="pic/红花檵（jì）木.jpeg" alt="红花檵木">
+                    </div>
+                    <div class="plant-info">
+                        <div class="plant-name">红花檵木 (红檵木球)</div>
+                        <div class="plant-meta">金缕梅科 檵木属 (Loropetalum chinense var. rubrum)</div>
+                        <div class="plant-desc">南方绿化带的“造型及色彩担当”。叶片全缘卵形，带有绛紫色或暗紫红色，表面因星状毛而具粗糙的纸质触感。极其耐修剪。</div>
+                        <div class="plant-status"><strong>5月物候：</strong>早春如碎红丝带般的盛花期已过。当前被人工修剪成整齐圆润的“球形”或“色带围栏”，主攻紫色叶片的色块对比。</div>
+                    </div>
+                </div>
+
+                <div class="plant-card">
+                    <div class="plant-image-box">
+                        <div class="image-gallery">
+                            <img src="pic/石榴树.jpg" alt="石榴树">
+                            <img src="pic/牡丹石榴.jpeg" alt="牡丹石榴">
+                        </div>
+                    </div>
+                    <div class="plant-info">
+                        <div class="plant-name">石榴树 / 重瓣花石榴</div>
+                        <div class="plant-meta">千屈菜科 石榴属 (Punica granatum)</div>
+                        <div class="plant-desc">狭长油亮、无锯齿的对生叶片，树干丛生灰褐色。万科中心同时引入了可结果的单瓣石榴及专门赏花的“重瓣牡丹石榴”。</div>
+                        <div class="plant-status"><strong>5月物候：</strong>正值“五月榴花照眼明”的超级盛花期。满树橙红/珊瑚粉的花瓣如揉碎的绸缎，基部带有厚实的洋梨状肉质花萼。</div>
+                    </div>
+                </div>
+
+                <div class="plant-card">
+                    <div class="plant-image-box">
+                        <img src="pic/大花六道木.jpeg" alt="大花六道木">
+                    </div>
+                    <div class="plant-info">
+                        <div class="plant-name">大花六道木</div>
+                        <div class="plant-meta">忍冬科 六道木属 (Abelia × grandiflora)</div>
+                        <div class="plant-desc">极其精致的常绿中小型灌木。最大特征是其新抽出的细长软弱枝条通体呈现尊贵的**红褐色**，与细小的对生油亮绿叶交织。</div>
+                        <div class="plant-status"><strong>5月物候：</strong>处于极强的萌芽期，外围一圈新叶展现治愈的亮黄绿色。一两周后将迎来挂满白粉色小喇叭铃铛花的长达数月的超长花期。</div>
+                    </div>
+                </div>
+
+                <div class="plant-card">
+                    <div class="plant-image-box">
+                        <img src="pic/海仙花.jpeg" alt="海仙花">
+                    </div>
+                    <div class="plant-info">
+                        <div class="plant-name">海仙花 (变色锦带)</div>
+                        <div class="plant-meta">忍冬科 锦带花属 (Weigela coraeensis)</div>
+                        <div class="plant-desc">对生倒卵形叶片，叶脉深深凹陷。其最神奇的特长是花色具有变色能力：刚开时为纯洁的白色或淡黄，受光照和授粉后逐步转为粉红，最终变为胭脂红。</div>
+                        <div class="plant-status"><strong>5月物候：</strong>花期高光时刻，同一个花序上白、粉、红三色交织，如同“同树不同色”的魔术。</div>
+                    </div>
+                </div>
+
+                <div class="plant-card">
+                    <div class="plant-image-box">
+                        <img src="pic/金银木（金银忍冬）.jpeg" alt="金银木（金银忍冬）">
+                    </div>
+                    <div class="plant-info">
+                        <div class="plant-name">金银木 (金银忍冬)</div>
+                        <div class="plant-meta">忍冬科 忍冬属 (Lonicera maackii)</div>
+                        <div class="plant-desc">枝叶开展的落叶灌木，叶片对生，花朵常由白转黄，因同株可见金银双色而得名。花后成对浆果渐次发育，是春夏交替时很容易被忽略的耐看细节。</div>
+                        <div class="plant-status"><strong>5月物候：</strong>处于花后至幼果期，枝端叶片浓绿，果实开始在叶腋间成对显现。</div>
+                    </div>
+                </div>
+
+                <div class="plant-card">
+                    <div class="plant-image-box">
+                        <div class="image-gallery">
+                            <img src="pic/杜鹃花 : 毛鹃.jpeg" alt="杜鹃花 毛鹃">
+                            <img src="pic/杜鹃花（花后生长期，常见如 锦绣杜鹃）.jpeg" alt="杜鹃花花后生长期">
+                        </div>
+                    </div>
+                    <div class="plant-info">
+                        <div class="plant-name">杜鹃花 (毛鹃 / 锦绣杜鹃)</div>
+                        <div class="plant-meta">杜鹃花科 杜鹃属 (Rhododendron spp.)</div>
+                        <div class="plant-desc">上海常见的色块灌木材料，叶片椭圆至倒卵形，枝叶密集，常被修剪成连续花带或低矮绿篱。盛花时色彩饱和，花后则回到细密油绿的背景层。</div>
+                        <div class="plant-status"><strong>5月物候：</strong>多数已进入花后生长期，新梢与叶片接替花朵成为主要观赏面。</div>
+                    </div>
+                </div>
+
+                <div class="plant-card">
+                    <div class="plant-image-box">
+                        <img src="pic/南天竹.jpeg" alt="南天竹">
+                    </div>
+                    <div class="plant-info">
+                        <div class="plant-name">南天竹</div>
+                        <div class="plant-meta">小檗科 南天竹属 (Nandina domestica)</div>
+                        <div class="plant-desc">姿态轻盈的常绿灌木，复叶层层展开，叶片细碎而有竹韵。新叶、秋冬叶色与红果都具观赏性，适合在林下与建筑边界处制造精致层次。</div>
+                        <div class="plant-status"><strong>5月物候：</strong>新叶逐渐转绿，植株进入稳定生长期，叶丛层次清晰。</div>
+                    </div>
+                </div>
+
+                <div class="plant-card">
+                    <div class="plant-image-box">
+                        <img src="pic/珊瑚树.jpeg" alt="珊瑚树">
+                    </div>
+                    <div class="plant-info">
+                        <div class="plant-name">珊瑚树 (法国冬青)</div>
+                        <div class="plant-meta">五福花科 荚蒾属 (Viburnum odoratissimum)</div>
+                        <div class="plant-desc">大型常绿防御性灌木。叶片硕大、对生，厚实且表面覆盖极厚的蜡质层，在阳光下如同打蜡般闪亮。耐污染、隔音能力极强。</div>
+                        <div class="plant-status"><strong>5月物候：</strong>正值花蕾期。枝条顶端顶着一蓬蓬绿色金字塔状的圆锥花序轴，密布着细小花蕾，即将开出白花。</div>
+                    </div>
+                </div>
+
+                <div class="plant-card">
+                    <div class="plant-image-box">
+                        <img src="pic/石楠.jpeg" alt="石楠">
+                    </div>
+                    <div class="plant-info">
+                        <div class="plant-name">石楠</div>
+                        <div class="plant-meta">蔷薇科 石楠属 (Photinia serratifolia)</div>
+                        <div class="plant-desc">南方园林中常见的常绿骨架树种，可作绿篱、球形修剪或小乔木化配置。新梢常带红褐色，老叶厚革质且有光泽，花后残留的伞状花序轴也很有辨识度。</div>
+                        <div class="plant-status"><strong>5月物候：</strong>多处于花后纯叶期，新梢与花序残迹共同形成清晰的枝端层次。</div>
+                    </div>
+                </div>
+
+                <div class="plant-card">
+                    <div class="plant-image-box">
+                        <img src="pic/小叶女贞.jpeg" alt="小叶女贞">
+                    </div>
+                    <div class="plant-info">
+                        <div class="plant-name">小叶女贞</div>
+                        <div class="plant-meta">木犀科 女贞属 (Ligustrum quihoui)</div>
+                        <div class="plant-desc">绿化带中常用的低矮绿篱和方垛材料，叶片小而密，严格对生，边缘全缘。它的优势不在单株姿态，而在连续修剪后形成稳定、清晰的绿色边界。</div>
+                        <div class="plant-status"><strong>5月物候：</strong>处于旺盛生长期，枝叶密集，为园区步道和花境边缘提供整齐的几何收边。</div>
+                    </div>
+                </div>
+
+                <div class="plant-card">
+                    <div class="plant-image-box">
+                        <img src="pic/构树.jpeg" alt="构树">
+                    </div>
+                    <div class="plant-info">
+                        <div class="plant-name">构树 (幼株)</div>
+                        <div class="plant-meta">桑科 构树属 (Broussonetia papyrifera)</div>
+                        <div class="plant-desc">城市荒地及园区边缘极为顽强的野生力量。叶片形状变化多端，幼期或新枝叶片呈夸张的3-5深裂（恐龙脚印状），表面布满硬毛，触摸有类似“魔术贴”的砂纸粘手感。</div>
+                        <div class="plant-status"><strong>5月物候：</strong>在新长出的萌蘖枝上展现极强的野性与生命力。</div>
+                    </div>
+                </div>
+
+            </div>
+
+            <h2 id="borders" class="section-title">三、多维立体欧式花境</h2>
+            <div class="intro-section">
+                <p>在万科中心核心步道旁，设计师布置了教科书般高水准的<strong>多维立体欧式花境</strong>。景观通过红、黄、绿、紫多色植物交互，打破了传统绿化带的沉闷：</p>
+                <div class="plant-grid" style="margin-top: 20px;">
+                    <div class="plant-card" style="grid-column: 1 / -1; flex-direction: row; height: auto;">
+                        <div class="plant-image-box" style="width: 40%; height: auto; min-height: 250px;">
+                            <img src="pic/花带.jpeg" alt="欧式综合花境全景">
+                        </div>
+                        <div class="plant-info">
+                            <div class="plant-name">精细化地被与花境群落 Matrix</div>
+                            <div class="plant-meta">非洲凤仙 × 矾根 × 鸢尾 × 洒金东瀛珊瑚</div>
+                            <ul class="border-list">
+                                <li><strong>第一层（前沿滚边）：</strong><span style="color:var(--accent-color); font-weight:bold;">非洲凤仙花</span> —— 火红色的低矮大开花量草花，紧密排列形成极强视觉冲击力的分界红带。</li>
+                                <li><strong>第二层（中前调色）：</strong><span style="color:var(--accent-color); font-weight:bold;">矾根群落</span> —— 包含‘焦糖色’、‘石灰柠檬黄色’及‘深紫黑色（黑曜石）’三色交织，耐阴且色彩多变。</li>
+                                <li><strong>第三层（线条骨架）：</strong><span style="color:var(--accent-color); font-weight:bold;">金叶女贞球/黄杨球</span> —— 定期修剪的黄绿及深绿几何球体，提供景观的刚性空间骨架。</li>
+                                <li><strong>第四层（利剑打破）：</strong><span style="color:var(--accent-color); font-weight:bold;">鸢尾花丛</span> —— 如绿色利剑般挺拔直立的叶片，顶梢正盛开着尊贵的蓝紫色鸢尾花。</li>
+                                <li><strong>第五层（背景墙）：</strong><span style="color:var(--accent-color); font-weight:bold;">洒金东瀛珊瑚</span> —— 厚实大绿叶上洒满金黄色密集斑点，如同泼墨金粉，作高级耐阴背景。</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <h2 id="aquatics" class="section-title">四、生态驳岸与水生植物</h2>
+            <div class="plant-grid">
+
+                <div class="plant-card">
+                    <div class="plant-image-box">
+                        <img src="pic/水竹芋.jpg" alt="再力花（水竹芋）">
+                    </div>
+                    <div class="plant-info">
+                        <div class="plant-name">再力花 (水竹芋)</div>
+                        <div class="plant-meta">竹芋科 再力花属 (Thalia dealbata)</div>
+                        <div class="plant-desc">人工景观湖与生态水池绝对的水质净化功臣。长卵圆形的硕大叶片表面覆盖着一层高级冷调的**白粉状蜡质层**。最精准的识别秘诀在于：其叶片与长长叶柄连接的部位（叶枕）自带一圈醒目的**红褐色圈**。</div>
+                        <div class="plant-status"><strong>5月物候：</strong>强力长叶积蓄能量期。叶柄强健挺拔直立，六月起将抽高开出紫罗兰色精致小花。</div>
+                    </div>
+                </div>
+
+                <div class="plant-card">
+                    <div class="plant-image-box">
+                        <img src="pic/水麻.jpeg" alt="水麻挂果">
+                    </div>
+                    <div class="plant-info">
+                        <div class="plant-name">水麻</div>
+                        <div class="plant-meta">荨麻科 水麻属 (Debregeasia orientalis)</div>
+                        <div class="plant-desc">常见于山谷溪边的野趣灌木。细长披针形叶片表面有深深凹陷的“三出脉”和细密皱褶。其核心看点是贴着枝条关节（叶腋）紧密黏附生长的一圈圈橙红色小球。</div>
+                        <div class="plant-status"><strong>5月物候：</strong>正值聚合果成熟的黄金季节，满枝挂满橙黄色“微型小橘子”般的浆果，是城市鸟类极好的夏日零食。</div>
+                    </div>
+                </div>
+
+                <div class="plant-card">
+                    <div class="plant-image-box">
+                        <img src="pic/蜡梅.jpg" alt="蜡梅">
+                    </div>
+                    <div class="plant-info">
+                        <div class="plant-name">夏日版 蜡梅</div>
+                        <div class="plant-meta">蜡梅科 蜡梅属 (Chimonanthus praecox)</div>
+                        <div class="plant-desc">冬季以蜡黄色芳香花闻名，入夏后则转入观叶与观果状态。叶片对生、质地略粗，枝条上可见纺锤状青绿色小坛子伪果，呈现出完全不同于冬日花期的安静面貌。</div>
+                        <div class="plant-status"><strong>5月物候：</strong>花期早已结束，青绿色坛状伪果逐渐显眼，是水景假山边很有季节辨识度的细节。</div>
+                    </div>
+                </div>
+
+                <div class="plant-card">
+                    <div class="plant-image-box">
+                        <img src="pic/八角金盘.jpeg" alt="八角金盘">
+                    </div>
+                    <div class="plant-info">
+                        <div class="plant-name">八角金盘</div>
+                        <div class="plant-meta">五加科 八角金盘属 (Fatsia japonica)</div>
+                        <div class="plant-desc">耐阴能力很强的常绿灌木，叶片巨大、掌状分裂，常有7-9个宽裂片，表面油亮厚实。它适合在树荫、水边和建筑阴面形成稳定的深绿色下层景观。</div>
+                        <div class="plant-status"><strong>5月物候：</strong>叶丛饱满油绿，在溪边水石交界处和阴湿角落承担厚实的观叶背景。</div>
+                    </div>
+                </div>
+
+                <div class="plant-card">
+                    <div class="plant-image-box">
+                        <img src="pic/大吴风草.jpeg" alt="大吴风草">
+                    </div>
+                    <div class="plant-info">
+                        <div class="plant-name">大吴风草</div>
+                        <div class="plant-meta">菊科 大吴风草属 (Farfugium japonicum)</div>
+                        <div class="plant-desc">耐阴湿的常绿观叶草本，叶片大而圆，质地厚实油亮，常在水边、林下、石旁形成稳定的低层叶面。它能把硬质驳岸与假山边缘柔化成更自然的阴生植物带。</div>
+                        <div class="plant-status"><strong>5月物候：</strong>处于旺盛展叶期，叶丛饱满，适合作为水景边缘与乔灌木下层之间的过渡植物。</div>
+                    </div>
+                </div>
+
+            </div>
+
+            <h2 id="ferns" class="section-title">五、假山石缝与地被微景观</h2>
+            <div class="plant-grid">
+
+                <div class="plant-card">
+                    <div class="plant-image-box">
+                        <div class="image-gallery three">
+                            <img src="pic/肾蕨.jpeg" alt="肾蕨">
+                            <img src="pic/乌毛蕨.jpeg" alt="乌毛蕨">
+                        </div>
+                    </div>
+                    <div class="plant-info">
+                        <div class="plant-name">蜈蚣草 / 肾蕨 (拳卷叶)</div>
+                        <div class="plant-meta">凤尾蕨科 / 肾蕨科</div>
+                        <div class="plant-desc">生存在坚硬假山石（太湖石）缝隙和湿润阴暗面的强悍蕨类。新叶伸出时呈现极具辨识度的“小问号”或蜗牛壳状的**拳卷叶**。肾蕨小叶基部还带有一个微型“耳状突起”盖住主轴。</div>
+                        <div class="plant-status"><strong>5月物候：</strong>正处于疯狂向上拔高、舒展羽状复叶的新生期。地下根茎有圆滚滚的肉质球茎蓄水。</div>
+                    </div>
+                </div>
+
+                <div class="plant-card">
+                    <div class="plant-image-box">
+                        <img src="pic/块根芦莉草.jpeg" alt="块根芦莉草">
+                    </div>
+                    <div class="plant-info">
+                        <div class="plant-name">块根芦莉草 (块根蓝花草)</div>
+                        <div class="plant-meta">爵床科 芦莉草属 (Ruellia squarrosa)</div>
+                        <div class="plant-desc">一种带有毛茸茸粗糙对生叶片的低矮地被。花冠呈淡紫色喇叭状。其最有趣的防伪标志是：花朵脱落后，5枚细长线形的绿色萼片会像“一根根绿色细针”一样支棱在枝头。</div>
+                        <div class="plant-status"><strong>5月物候：</strong>正零星开着淡紫色小喇叭花，枝头留存大量针垫状的宿存萼片。</div>
+                    </div>
+                </div>
+
+                <div class="plant-card">
+                    <div class="plant-image-box">
+                        <img src="pic/花叶络石.jpeg" alt="花叶络石">
+                    </div>
+                    <div class="plant-info">
+                        <div class="plant-name">花叶络石</div>
+                        <div class="plant-meta">夹竹桃科 络石属 (Trachelospermum asiaticum 'Variegatum')</div>
+                        <div class="plant-desc">常绿藤本型地被，枝条匍匐或攀援，新叶常呈粉白、乳白与绿色斑驳变化，成熟后逐渐转绿。适合在林下、石边和花境前沿制造明亮的细碎色彩层。</div>
+                        <div class="plant-status"><strong>5月物候：</strong>新梢生长活跃，彩叶最为醒目，是阴生地被中提升亮度的关键材料。</div>
+                    </div>
+                </div>
+
+                <div class="plant-card">
+                    <div class="plant-image-box">
+                        <img src="pic/粉花绣线菊.jpeg" alt="粉花绣线菊">
+                    </div>
+                    <div class="plant-info">
+                        <div class="plant-name">粉花绣线菊</div>
+                        <div class="plant-meta">蔷薇科 绣线菊属 (Spiraea japonica)</div>
+                        <div class="plant-desc">低矮花灌木，小花密集成平头状伞房花序，雄蕊细长而外伸，使整簇花呈现毛茸茸的粉色烟雾感。常用于花境中层或地被灌木过渡带。</div>
+                        <div class="plant-status"><strong>5月物候：</strong>正值粉红棉花糖般的盛花期，花序饱满，是地被微景观中很有柔软感的色彩焦点。</div>
+                    </div>
+                </div>
+
+                <div class="plant-card">
+                    <div class="plant-image-box">
+                        <img src="pic/铺地柏.jpeg" alt="铺地柏">
+                    </div>
+                    <div class="plant-info">
+                        <div class="plant-name">铺地柏</div>
+                        <div class="plant-meta">柏科 刺柏属 (Juniperus procumbens)</div>
+                        <div class="plant-desc">匍匐型常绿针叶灌木，枝条贴地伸展，针叶刚硬，常呈冷调蓝绿色或灰绿色。它能在假山、坡地和石缝边缘形成稳定的针叶地被层。</div>
+                        <div class="plant-status"><strong>5月物候：</strong>枝叶进入稳定生长期，为假山石缝提供冷色调、低维护的生态软化层。</div>
+                    </div>
+                </div>
+
+                <div class="plant-card">
+                    <div class="plant-image-box">
+                        <img src="pic/红花酢（cù）酱草.jpeg" alt="红花酢酱草">
+                    </div>
+                    <div class="plant-info">
+                        <div class="plant-name">红花酢酱草</div>
+                        <div class="plant-meta">酢酱草科 酢酱草属 (Oxalis debilis)</div>
+                        <div class="plant-desc">常被误认为三叶草的经典草本地被。每柄三片小叶，皆呈极其完美的**倒心形**（顶端内凹）。具有奇妙的“睡眠运动”，在阴天、傍晚或强光退去时，叶片与粉紫色五瓣小花都会折叠闭合。</div>
+                        <div class="plant-status"><strong>5月物候：</strong>大面积覆盖于树阴草坪边缘，正处于白天盛开、夜晚闭合的规律花期中。</div>
+                    </div>
+                </div>
+
+            </div>
+        </main>
+    </div>
+
+    <footer style="background-color: var(--primary-color); color: white; text-align: center; padding: 20px; margin-top: 50px; font-size: 0.9rem;">
+        <p>© 2026 徐汇万科中心绿地植物多样性微型调研报告 | 探索城市绿碳与景观美学</p>
+    </footer>
+
+</body>
+</html>
